@@ -1,15 +1,23 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const PickMember = () => {
-    
+    const navigation = useNavigation();
+
   return (
     <View>
       <Text>Pick member screen</Text>
-      <TouchableOpacity style={styles.button} >
+      <TouchableOpacity style={styles.button}
+       onPress={() => {
+        navigation.navigate('Admin');
+      }}>
       <Text style={styles.buttonText}>{"Admin"}</Text>
     </TouchableOpacity>
-    <TouchableOpacity style={styles.button}>
+    <TouchableOpacity style={styles.button} 
+    onPress={() => {
+        navigation.navigate('Customer');
+      }}>
       <Text style={styles.buttonText}>{"Customer"}</Text>
     </TouchableOpacity>
     </View>

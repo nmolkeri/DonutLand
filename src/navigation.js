@@ -12,26 +12,26 @@ import { Pressable } from 'react-native';
 import { Text } from 'react-native';
 import AddEditDonut from './screens/admin/addDonut';
 import AddEditTopping from './screens/admin/addTopping';
+import React, { useState } from 'react';
+
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
+ 
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Pick Member" component={PickMember} />
         <Stack.Screen name="Admin" component={Admin} />
-        <Stack.Screen name="OrderList" component={OrderList} />
-        <Stack.Screen 
-                name="DonutDashboard" 
-                component={DonutDashboard}
-                options={({navigation}) => ({
-                    headerRight: () => (
-                        <Pressable onPress={() => navigation.navigate("AddEditDonut")} >
-                            <Text>Add/Edit</Text>
-                        </Pressable>
-                        ),
-                    })}
-                    />
+        <Stack.Screen name="OrderList" component={OrderList}
+            options={{
+                title: 'Orders',
+            }} />
+        <Stack.Screen name="DonutDashboard" 
+            component={DonutDashboard}
+            options={{
+                title: 'Dashboard',
+              }}/>
         <Stack.Screen 
             name="OrderDetails" 
             component={OrderDetails}
@@ -54,9 +54,10 @@ const Navigation = () => {
             options={{presentation: "modal"}}
         />
         <Stack.Screen name="Checkout" component={Checkout} />
-        <Stack.Screen name="AddEditDonut" component={AddEditDonut} />
-        <Stack.Screen name="AddEditTopping" component={AddEditTopping} />
+        <Stack.Screen name="AddEditDonut" component={AddEditDonut} options={{presentation: "modal"}}/>
+        <Stack.Screen name="AddEditTopping" component={AddEditTopping} options={{presentation: "modal"}}/>
       </Stack.Navigator>
+      
     </NavigationContainer>
   );
 };

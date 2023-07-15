@@ -15,7 +15,6 @@ const PickMember = ({ navigation }) => {
     </TouchableOpacity>
     <TouchableOpacity style={styles.button} 
     onPress={() => {
-        console.log("donut dashboard tapped tapped");
         navigation.navigate('Customer');
       }}>
       <Text style={styles.buttonText}>{"Customer"}</Text>

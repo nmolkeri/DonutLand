@@ -1,10 +1,29 @@
-import React, { useState, useLayoutEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet, Button, ActivityIndicator } from 'react-native';
 import { useActionSheet } from '@expo/react-native-action-sheet';
+import axios from 'axios';
 
 const DonutDashboard = ({ navigation }) => {
-
+  const [donutData, setDonutData] = useState(null);
+  const [loading, setLoading] = useState(true);
     const { showActionSheetWithOptions } = useActionSheet();
+    
+    useEffect(() => {
+      fetchDonutData();
+    }, []);
+
+    const fetchDonutData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3100/donut');
+        setDonutData(response.data);
+        console.log(donutData)
+        setLoading(false);
+        console.log("fetcvhiong donuts")
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    };
 
   const showActionSheet = () => {
     const options = ['Add donut', 'Add topping', 'Cancel'];
@@ -31,6 +50,14 @@ const DonutDashboard = ({ navigation }) => {
         });
       }, [navigation]);
     
+      const renderDonut = ({ donut }) => (
+        console.log(donut)
+        // <View style={styles.item}>
+        //   <Text>ID: {donut.id}</Text>
+        //   <Text>Name: {donut.name}</Text>
+        // </View>
+      );
+
   return (
     <View style={styles.container}>
       <Text>Donut dashboard</Text>
@@ -38,6 +65,17 @@ const DonutDashboard = ({ navigation }) => {
         <Text>Add section to display toppings list</Text>
         <Text>right top button to add donut or topping</Text>
         <Text>Add, edit or sold out option for donut and topping</Text>
+        {loading ? (
+        <ActivityIndicator size="large" color="#3498db" />
+      ) : donutData ? (
+        <FlatList
+          data={donutData}
+          renderItem={renderDonut}
+          keyExtractor={(item) => item.id}
+        />
+      ) : (
+        <Text>Data not available</Text>
+      )}
     </View>
   );
 };
@@ -64,6 +102,13 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
+      },
+      item: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10,
       },
   });
 

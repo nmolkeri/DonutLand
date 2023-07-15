@@ -2,8 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const PickMember = () => {
-    const navigation = useNavigation();
+const PickMember = ({ navigation }) => {
 
   return (
     <View>
@@ -16,6 +15,7 @@ const PickMember = () => {
     </TouchableOpacity>
     <TouchableOpacity style={styles.button} 
     onPress={() => {
+        console.log("donut dashboard tapped tapped");
         navigation.navigate('Customer');
       }}>
       <Text style={styles.buttonText}>{"Customer"}</Text>

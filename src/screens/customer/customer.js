@@ -1,8 +1,14 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const Customer = () => {
-    
+const Customer = ({ navigation }) => {
+  const navigateToCustomizeDonut = () => {
+    //update selected product
+    //dispatch an event in air. Reducer will catch this action and current state. 
+    // dispatch(productSlice.actions.setSelected(item.id));
+    navigation.navigate('CustomizeDonut');
+  };
+  
   return (
     <View>
       <Text>Customer</Text>
@@ -10,7 +16,7 @@ const Customer = () => {
       <Text>Show donut details to add topping</Text>
       <Text>Show sold out if sold out</Text>
       <Text>No more than 24 donuts can be added to card</Text>
-    <TouchableOpacity style={styles.button}>
+    <TouchableOpacity style={styles.button} onPress={navigateToCustomizeDonut}>
       <Text style={styles.buttonText}>{"Customize donut"}</Text>
     </TouchableOpacity>
     </View>

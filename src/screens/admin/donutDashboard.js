@@ -10,13 +10,6 @@ const DonutDashboard = () => {
         <Text>Add section to display toppings list</Text>
         <Text>right top button to add donut or topping</Text>
         <Text>Add, edit or sold out option for donut and topping</Text>
-
-      <TouchableOpacity style={styles.button} >
-      <Text style={styles.buttonText}>{"Order list"}</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.button} >
-      <Text style={styles.buttonText}>{"Donut dashboard"}</Text>
-    </TouchableOpacity>
     </View>
   );
 };

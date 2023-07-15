@@ -10,7 +10,7 @@ const CustomizeDonut = () => {
       <Text>Limit only 3 toppings</Text>
       <Text>Show sold out if sold out</Text>
     <TouchableOpacity style={styles.button}>
-      <Text style={styles.buttonText}>{"Customer"}</Text>
+      <Text style={styles.buttonText}>{"Add donut to cart"}</Text>
     </TouchableOpacity>
     </View>
   );

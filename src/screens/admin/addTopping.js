@@ -1,16 +1,13 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const Checkout = () => {
+const AddEditTopping = () => {
     
   return (
     <View>
-      <Text>Checkout page</Text>
-      <Text>Display donuts added to cart here</Text>
-      <Text>Text inputs for name and phone number</Text>
-    <TouchableOpacity style={styles.button}>
-      <Text style={styles.buttonText}>{"Checkout"}</Text>
-    </TouchableOpacity>
+      <Text>AddEditTopping</Text>
+        <Text>Add button if new topping</Text>
+        <Text>Edit button if old topping</Text>
     </View>
   );
 };
@@ -31,4 +28,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default Checkout;
+export default AddEditTopping;

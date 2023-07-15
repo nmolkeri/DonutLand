@@ -18,7 +18,7 @@ const PickMember = () => {
 
 const styles = StyleSheet.create({
     button: {
-      backgroundColor: '#3498db',
+      backgroundColor: "red",
       paddingVertical: 10,
       paddingHorizontal: 20,
       borderRadius: 5,

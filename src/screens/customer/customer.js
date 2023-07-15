@@ -6,9 +6,12 @@ const Customer = () => {
   return (
     <View>
       <Text>Customer</Text>
-      
+      <Text>Display donut list here</Text>
+      <Text>Show donut details to add topping</Text>
+      <Text>Show sold out if sold out</Text>
+      <Text>No more than 24 donuts can be added to card</Text>
     <TouchableOpacity style={styles.button}>
-      <Text style={styles.buttonText}>{"Customer"}</Text>
+      <Text style={styles.buttonText}>{"Customize donut"}</Text>
     </TouchableOpacity>
     </View>
   );

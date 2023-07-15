@@ -1,13 +1,21 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const Admin = () => {
+const DonutDashboard = () => {
     
   return (
     <View>
-      <Text>Admin</Text>
+      <Text>Donut dashboard</Text>
+        <Text>Add section to display donuts</Text>
+        <Text>Add section to display toppings list</Text>
+        <Text>right top button to add donut or topping</Text>
+        <Text>Add, edit or sold out option for donut and topping</Text>
+
       <TouchableOpacity style={styles.button} >
-      <Text style={styles.buttonText}>{"Admin"}</Text>
+      <Text style={styles.buttonText}>{"Order list"}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.button} >
+      <Text style={styles.buttonText}>{"Donut dashboard"}</Text>
     </TouchableOpacity>
     </View>
   );
@@ -29,4 +37,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default Admin;
+export default DonutDashboard;

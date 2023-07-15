@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import PickMember from './src/screens/pickMember';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working  asdf on your app!</Text>
+      <PickMember/>
       <StatusBar style="auto" />
     </View>
   );

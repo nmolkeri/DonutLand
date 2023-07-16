@@ -11,9 +11,10 @@ export const cartSlice = createSlice({
         addItemToCart: (state, action) => {
             const {id, name, amount} = action.payload;
             const totalQuantity = state.donuts.reduce((total, item) => total + item.quantity, 0);
-            const cartItem = state.donuts.find((item) => item.product === id);
+            const cartItem = state.donuts.find((item) => item.id == id);
+            console.log("before")
             console.log(state.donuts);
-            if(totalQuantity <= 24) {
+            if(totalQuantity < 24) {
                 if(cartItem) {
                     cartItem.quantity += amount
                     if(cartItem.quantity <= 0){
@@ -23,6 +24,9 @@ export const cartSlice = createSlice({
                     state.donuts.push({id: id, name: name, quantity: 1});
                 }
             }
+
+            console.log("after")
+            console.log(state.donuts);
         },
 
         changeQuantity: (state, action) => {

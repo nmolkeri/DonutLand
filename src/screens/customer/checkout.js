@@ -8,8 +8,9 @@ const Checkout = ({ navigation }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   var cartItems = useSelector((state) => state.cart.donuts);
-  console.log(cartItems);
   const baseUrl = 'http://localhost:3100';
+  const [nameIsEmpty, setNameIsEmpty] = useState(false);
+  const [numberIsEmpty, setNumberIsEmpty] = useState(false);
 
   const renderItem = ({ item }) => (
     <View style={styles.container}>
@@ -21,6 +22,8 @@ const Checkout = ({ navigation }) => {
   const checkout = async () => {
 
     if(name == '' || number == ''){
+      setNameIsEmpty(name == '')
+      setNumberIsEmpty(numberIsEmpty == '')
       return
     }
 
@@ -78,19 +81,19 @@ const Checkout = ({ navigation }) => {
       <Text>Text inputs for name and phone number</Text>
       <Text style={styles.label}>Name:</Text>
       <TextInput
-        style={styles.input}
         value={name}
         onChangeText={(text) => setName(text)}
-        placeholder="Enter your name"
+        placeholder="Enter your name"        
+        style={[styles.textInput, !nameIsEmpty ? {} : styles.redBorder]}
       />
 
       <Text style={styles.label}>Number:</Text>
       <TextInput
-        style={styles.input}
         value={number}
         onChangeText={(text) => setNumber(text)}
         keyboardType="numeric"
         placeholder="Enter a number"
+        style={[styles.textInput, !numberIsEmpty ? {} : styles.redBorder]}
       />
       <FlatList
           data={cartItems}
@@ -128,6 +131,15 @@ const styles = StyleSheet.create({
       padding: 10,
       fontSize: 16,
       marginBottom: 20,
+    },
+    textInput: {
+      height: 40,
+      borderColor: 'gray',
+      borderWidth: 1,
+      paddingHorizontal: 10,
+    },
+    redBorder: {
+      borderColor: 'red',
     },
   });
 

@@ -1,38 +1,62 @@
 import React, { useState, useLayoutEffect, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Button, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, SectionList, StyleSheet, Button, ActivityIndicator } from 'react-native';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import axios from 'axios';
 
 const DonutDashboard = ({ navigation }) => {
-  const [donutData, setDonutData] = useState(null);
+  const [donutData, setDonutData] = useState([]);
+  const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
     const { showActionSheetWithOptions } = useActionSheet();
     
     useEffect(() => {
       fetchDonutData();
+      fetchToppings();
     }, []);
 
     const fetchDonutData = async () => {
-      try {
-        const response = await axios.get('http://localhost:3100/donut');
-        setDonutData(response.data);
-        console.log(donutData)
-        setLoading(false);
-        console.log("fetcvhiong donuts")
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setLoading(false);
-      }
+      await axios.get('http://localhost:3100/donut')
+          .then(function (response) {
+            setDonutData(response.data);
+          })
+          .catch(function (error) {
+            setLoading(false);
+          })
     };
+
+    const fetchToppings = async () => {
+      await axios.get('http://localhost:3100/topping')
+      .then(function (response) {
+        console.log("got response from server")
+        const sections = [
+          {
+            title: 'Donuts',
+            data: donutData,
+          },
+          {
+            title: 'Topping', 
+            data: response.data,
+          },
+        ];
+        setSections(sections);
+         setLoading(false);
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        setLoading(false);
+        console.log(error);
+      })
+    }
+    
 
   const showActionSheet = () => {
     const options = ['Add donut', 'Add topping', 'Cancel'];
     const cancelButtonIndex = 2;
     const handleActionSheetSelection = (buttonIndex) => {
         if (buttonIndex === 0) {
-            navigation.navigate('AddEditDonut');
+            navigation.navigate('AddEditDonut', {data: {type: "donut", id: '', itemName: ''}});
         } else if (buttonIndex === 1) {
-          navigation.navigate('AddEditTopping');
+          navigation.navigate('AddEditDonut', {data: {type: "topping", id: '', itemName: ''}});
         }
       };
 
@@ -50,12 +74,24 @@ const DonutDashboard = ({ navigation }) => {
         });
       }, [navigation]);
     
-      const renderDonut = ({ donut }) => (
-        console.log(donut)
-        // <View style={styles.item}>
-        //   <Text>ID: {donut.id}</Text>
-        //   <Text>Name: {donut.name}</Text>
-        // </View>
+      const handleItemPress = (item, section) => {
+        console.log("section here ")
+        console.log(section)
+        navigation.navigate('AddEditDonut', {data: {type: section.title == "Donuts" ? "donut" : "topping", id: item.id, itemName: item.name}});
+      };
+
+      const renderItem = ({ item, section }) => (
+        <TouchableOpacity onPress={() => handleItemPress(item, section)} style={styles.itemTouchable}>
+        <View style={styles.item}>
+          <Text>Name: {item.name}</Text>
+        </View>
+        </TouchableOpacity>
+      );
+    
+      const renderSectionHeader = ({ section }) => (
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionHeaderText}>{section.title}</Text>
+        </View>
       );
 
   return (
@@ -68,11 +104,12 @@ const DonutDashboard = ({ navigation }) => {
         {loading ? (
         <ActivityIndicator size="large" color="#3498db" />
       ) : donutData ? (
-        <FlatList
-          data={donutData}
-          renderItem={renderDonut}
-          keyExtractor={(item) => item.id}
-        />
+        <SectionList
+        sections={sections}
+        renderItem={renderItem}
+        renderSectionHeader={renderSectionHeader}
+        keyExtractor={(item) => item.id}
+      />
       ) : (
         <Text>Data not available</Text>
       )}

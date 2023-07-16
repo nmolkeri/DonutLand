@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const Admin = ({ navigation }) => {
+  
   const navigateToOrderlist = () => {
     //update selected product
     //dispatch an event in air. Reducer will catch this action and current state. 
@@ -14,7 +15,6 @@ const Admin = ({ navigation }) => {
     //update selected product
     //dispatch an event in air. Reducer will catch this action and current state. 
     // dispatch(productSlice.actions.setSelected(item.id));
-    console.log("donut dashboard tapped tapped");
     navigation.navigate('DonutDashboard');
   };
 

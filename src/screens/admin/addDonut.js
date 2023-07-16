@@ -1,45 +1,49 @@
 import React, { useState, useEffect }  from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
-import Donut from '../../model/donut';
 import { generateUUID } from '../../utils';
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
 
-const AddEditDonut = ({ route, navigation }) => {
-  const [name, setName] = useState('');
-  const [id, setId] = useState('');
-  const [type, setType] = useState('');
-  const [updateAdd, setUpdateAdd] = useState('');
+const AddEditDonut = ({ navigation }) => {
+  const [text, setText] = useState('');
+  // const [id, setId] = useState('');
+  // const [type, setType] = useState('');
+  // const [updateAdd, setUpdateAdd] = useState('');
+  const id = useSelector((state) => state.item.selectedProductId);
+  const name = useSelector((state) => state.item.selectedProductName);
+  const type = useSelector((state) => state.item.type);
+  const updateAdd = useSelector((state) => state.item.addEdit);
 
   const baseUrl = 'http://localhost:3100';
-  const userId = '123';
+  console.log("asdf");
 
-  useEffect(() => {
-    const data = route.params.data;
+  // useEffect(() => {
+  //   // const data = route.params.data;
 
-    if(data.itemName == '' && data.id == ''){
-      setUpdateAdd("Add");
-    } else {
-      setUpdateAdd("Update")
-    }
+  //   // if(name == '' && data.id == ''){
+  //   //   setUpdateAdd("Add");
+  //   // } else {
+  //   //   setUpdateAdd("Update")
+  //   // }
 
-    setName(data.itemName);
-    setId(data.id);
-    console.log("hello there")
-    console.log(data.type)
-    setType(data.type);
-  }, [route.params.data]);
+  //   setName(data.itemName);
+  //   setId(data.id);
+  //   console.log("hello there")
+  //   console.log(data.type)
+  //   setType(data.type);
+  // }, [route.params.data]);
 
-  const handleInputChange2 = (text) => {
-    setName(text);
-  };
+  // const handleInputChange2 = (text) => {
+  //   setName(text);
+  // };
 
 
   const sendDataToAPI = async (data) => {
     try {
       const apiUrl = `${baseUrl}/${type}`;
-      if(updateAdd == "Add") {
+      if(updateAdd == "add") {
         await axios.post(apiUrl, data);
-      } else if (updateAdd == "Update") {
+      } else if (updateAdd == "update") {
         var ap = `${apiUrl}/${id}`
         console.log(ap)
        const response = await axios.patch(ap, data);
@@ -73,7 +77,7 @@ const AddEditDonut = ({ route, navigation }) => {
     navigation.goBack();
   };
 
-  const display = updateAdd == "Update" ? "flex" : "none";
+  const display = updateAdd == "update" ? "flex" : "none";
 
   return (
     <View style={styles.container}>
@@ -82,7 +86,6 @@ const AddEditDonut = ({ route, navigation }) => {
       <TextInput
         style={styles.input}
         value={name}
-        onChangeText={handleInputChange2}
       />
       <TouchableOpacity onPress={handleSubmit} style={styles.button}>
         <Text style={styles.buttonText}>{updateAdd}</Text>

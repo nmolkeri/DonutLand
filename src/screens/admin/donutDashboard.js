@@ -2,11 +2,15 @@ import React, { useState, useLayoutEffect, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SectionList, StyleSheet, Button, ActivityIndicator } from 'react-native';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { itemSlice } from '../../store/itemSlice';
 
 const DonutDashboard = ({ navigation }) => {
   const [donutData, setDonutData] = useState([]);
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
+    const dispatch = useDispatch();
+
     const { showActionSheetWithOptions } = useActionSheet();
     
     useEffect(() => {
@@ -54,9 +58,17 @@ const DonutDashboard = ({ navigation }) => {
     const cancelButtonIndex = 2;
     const handleActionSheetSelection = (buttonIndex) => {
         if (buttonIndex === 0) {
-            navigation.navigate('AddEditDonut', {data: {type: "donut", id: '', itemName: ''}});
+          dispatch(itemSlice.actions.setSelected({id: "", 
+            name: "", 
+            type: "donut", 
+            addEdit: "add"}));
+            navigation.navigate('AddEditDonut');
         } else if (buttonIndex === 1) {
-          navigation.navigate('AddEditDonut', {data: {type: "topping", id: '', itemName: ''}});
+          dispatch(itemSlice.actions.setSelected({id: "", 
+            name: "", 
+            type: "topping", 
+            addEdit: "add"}));
+          navigation.navigate('AddEditDonut');
         }
       };
 
@@ -77,7 +89,11 @@ const DonutDashboard = ({ navigation }) => {
       const handleItemPress = (item, section) => {
         console.log("section here ")
         console.log(section)
-        navigation.navigate('AddEditDonut', {data: {type: section.title == "Donuts" ? "donut" : "topping", id: item.id, itemName: item.name}});
+        dispatch(itemSlice.actions.setSelected({id: item.id, 
+          name: item.name, 
+          type: section.title == "Donuts" ? "donut" : "topping", 
+          addEdit: "update"}));
+        navigation.navigate('AddEditDonut');
       };
 
       const renderItem = ({ item, section }) => (

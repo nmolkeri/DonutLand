@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'rea
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { cartSlice } from '../../store/cartSlice';
-
+import { getDonuts } from '../../api';
 const Customer = ({ navigation }) => {
   const [donutData, setDonutData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +17,7 @@ const Customer = ({ navigation }) => {
     }, []);
 
     const fetchDonutData = async () => {
-      await axios.get('http://localhost:3100/donut')
+      await getDonuts()
           .then(function (response) {
             setDonutData(response.data);
             setLoading(false);

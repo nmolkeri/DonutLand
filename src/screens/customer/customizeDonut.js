@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'rea
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { FlatList } from 'native-base';
+import { getTopping } from '../../api';
 
 const CustomizeDonut = ({ navigation }) => {
   const [toppings, setToppings] = useState([]);
@@ -14,7 +15,7 @@ const CustomizeDonut = ({ navigation }) => {
     }, [])
 
   const fetchToppings = async () => {
-    await axios.get('http://localhost:3100/topping')
+    await getTopping()
     .then(function (response) {
       console.log("got response from server")
       setToppings(response.data);

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDonuts } from "../../api";
 import ItemList from "../../components/itemList";
 import { cartSlice } from "../../store/cartSlice";
+
 const Customer = ({ navigation }) => {
   const [donutData, setDonutData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -58,11 +59,9 @@ const Customer = ({ navigation }) => {
     return item ? item.quantity : 0;
   };
 
-  console.log(donutsWithQuantityById);
-
   const renderItem = ({ item }) => (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={navigateToCustomizeDonut}>
+    <View style={styles.itemContainer}>
+      <TouchableOpacity onPress={() => navigateToCustomizeDonut(item)}>
         <Text style={styles.name}>{item.name}</Text>
       </TouchableOpacity>
       <View style={styles.stepperContainer}>
@@ -83,29 +82,19 @@ const Customer = ({ navigation }) => {
     </View>
   );
 
-  const navigateToCustomizeDonut = () => {
-    // dispatch(productSlice.actions.setSelected(item.id));
-    navigation.navigate("CustomizeDonut");
+  const navigateToCustomizeDonut = (item) => {
+    navigation.navigate("CustomizeDonut", { data: item });
+  };
+
+  const clearCart = () => {
+    console.log("Clear cart");
   };
 
   return (
-    <View>
-      <Text>Customer</Text>
-      <Text>Display donut list here</Text>
-      <Text>Show donut details to add topping</Text>
-      <Text>Show sold out if sold out</Text>
-      <Text>No more than 24 donuts can be added to card</Text>
-      {/* {loading ? (
-        <ActivityIndicator size="large" color="#3498db" />
-      ) : donutData ? (
-        <FlatList
-          data={donutData}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-      />
-      ) : (
-        <Text>Data not available</Text>
-      )} */}
+    <View style={styles.container}>
+      <Text style={styles.subHeaderText}>
+        Tap on donut name to customize topping
+      </Text>
       <ItemList loading={loading} data={donutData} renderItem={renderItem} />
     </View>
   );
@@ -113,26 +102,29 @@ const Customer = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#f0f0f0",
-    padding: 10,
-    borderRadius: 5,
-  },
-
-  button: {
-    backgroundColor: "#3498db",
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 30,
+    marginBottom: 40,
   },
-  buttonText: {
-    color: "#fff",
+  text: {
     fontSize: 16,
+  },
+  subHeaderText: {
+    color: "black",
+    fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
+    marginVertical: 20,
+  },
+  itemContainer: {
+    backgroundColor: "#ffffff",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+    borderRadius: 5,
   },
   stepperButton: {
     width: 40,

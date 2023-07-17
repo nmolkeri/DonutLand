@@ -1,12 +1,20 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const DonutLandButton = ({ title, onPress, isVisible = true }) => {
+const DonutLandButton = ({
+  title,
+  onPress,
+  isVisible = true,
+  backgroundColor = "#3498db",
+}) => {
   if (!isVisible) {
     return null;
   }
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.button, { backgroundColor }]}
+      onPress={onPress}
+    >
       <Text style={styles.buttonText}>{title}</Text>
     </TouchableOpacity>
   );

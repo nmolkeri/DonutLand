@@ -28,7 +28,13 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Pick Member" component={PickMember} />
+        <Stack.Screen
+          name="Pick Member"
+          component={PickMember}
+          options={{
+            title: "Pick Member",
+          }}
+        />
         <Stack.Screen name="Admin" component={Admin} />
         <Stack.Screen
           name="OrderList"
@@ -47,7 +53,7 @@ const Navigation = () => {
         <Stack.Screen
           name="OrderDetails"
           component={OrderDetails}
-          options={{ presentation: "modal" }}
+          options={{ presentation: "modal", title: "Order details" }}
         />
         <Stack.Screen
           name="Customer"
@@ -67,13 +73,13 @@ const Navigation = () => {
         <Stack.Screen
           name="CustomizeDonut"
           component={CustomizeDonut}
-          options={{ presentation: "modal" }}
+          options={{ presentation: "modal", title: "Customize Donut" }}
         />
         <Stack.Screen name="Checkout" component={Checkout} />
         <Stack.Screen
           name="AddEditItem"
           component={AddEditItem}
-          options={{ presentation: "modal" }}
+          options={{ presentation: "modal", title: "Add/Edit" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

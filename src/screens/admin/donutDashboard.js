@@ -125,6 +125,11 @@ const DonutDashboard = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionHeaderText}>
+          Tap on item to Update/Delete
+        </Text>
+      </View>
       <ItemSectionList
         loading={loading}
         data={sections}

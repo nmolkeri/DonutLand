@@ -4,23 +4,16 @@ import DonutLandButton from "../../components/dButton";
 
 const Admin = ({ navigation }) => {
   const navigateToOrderlist = () => {
-    //update selected product
-    //dispatch an event in air. Reducer will catch this action and current state.
-    // dispatch(productSlice.actions.setSelected(item.id));
-    console.log("order list tapped");
     navigation.navigate("OrderList");
   };
 
   const navigateToDashBoard = () => {
-    //update selected product
-    //dispatch an event in air. Reducer will catch this action and current state.
-    // dispatch(productSlice.actions.setSelected(item.id));
     navigation.navigate("DonutDashboard");
   };
 
   return (
-    <View>
-      <Text>Admin</Text>
+    <View style={styles.container}>
+      <Text style={styles.headerText}>Pick what you wanna do</Text>
       <DonutLandButton title="Order list" onPress={navigateToOrderlist} />
       <DonutLandButton title="Donut dashboard" onPress={navigateToDashBoard} />
     </View>
@@ -28,16 +21,21 @@ const Admin = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: "#3498db",
+  container: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 30,
+    marginBottom: 30,
   },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  headerText: {
+    color: "black",
+    fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
   },

@@ -1,20 +1,26 @@
-import { FlatList } from "native-base";
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useDispatch } from "react-redux";
 import { getTopping } from "../../api";
+import DonutLandButton from "../../components/dButton";
+import Item from "../../components/item";
+import ItemList from "../../components/itemList";
+import { cartSlice } from "../../store/cartSlice";
 
-const CustomizeDonut = ({ navigation }) => {
+const CustomizeDonut = ({ route, navigation }) => {
   const [toppings, setToppings] = useState([]);
-  var [toppingsAdded, setToppingsAdded] = useState([]);
+  var toppingsAdded = [];
+  var [alertMessage, setAlertMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [donutData, setDonutData] = useState({});
+
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const data = route.params.data;
+    setDonutData(data);
+  }, [route.params.data]);
+
   useEffect(() => {
     fetchToppings();
   }, []);
@@ -22,32 +28,33 @@ const CustomizeDonut = ({ navigation }) => {
   const fetchToppings = async () => {
     await getTopping()
       .then(function (response) {
-        console.log("got response from server");
         setToppings(response.data);
         setLoading(false);
-        console.log(response.data);
       })
       .catch(function (error) {
         setLoading(false);
         console.log(error);
       });
   };
-
+  console.log(toppings);
   const handleItemPress = (item) => {
+    console.log(item);
     const itemPresent = toppingsAdded.find((i) => i.id === item.id);
-
     if (!itemPresent) {
+      setAlertMessage(`${item.name} added`);
       toppingsAdded.push(item);
     } else {
+      setAlertMessage(`${item.name} removed`);
       toppingsAdded = toppingsAdded.filter((i) => i !== item);
     }
+    console.log(toppingsAdded);
   };
 
-  const addDonutToCart = (item) => {
+  const addDonutToCart = () => {
     dispatch(
       cartSlice.actions.addItemToCart({
-        id: item.id,
-        name: item.name,
+        id: donutData.id,
+        name: donutData.name,
         amount: 1,
       })
     );
@@ -55,41 +62,25 @@ const CustomizeDonut = ({ navigation }) => {
   };
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => handleItemPress(item)}
-      style={styles.itemTouchable}
-    >
-      <View style={styles.item}>
-        <Text>Name: {item.name}</Text>
-      </View>
-    </TouchableOpacity>
+    <Item name={item.name} onTapped={handleItemPress} />
   );
 
   return (
-    <View>
-      <Text>Customize Donut</Text>
-      <Text>Show donut details if available</Text>
-      <Text>Limit only 3 toppings</Text>
-      <Text>Show sold out if sold out</Text>
-      {loading ? (
-        <ActivityIndicator size="large" color="#3498db" />
-      ) : toppings ? (
-        <FlatList
-          data={toppings}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
-      ) : (
-        <Text>Data not available</Text>
-      )}
-      <TouchableOpacity style={styles.button} onPress={addDonutToCart}>
-        <Text style={styles.buttonText}>{"Add donut to cart"}</Text>
-      </TouchableOpacity>
+    <View style={styles.container}>
+      <Text style={styles.headerText}>{donutData.name}</Text>
+      <Text style={styles.subHeaderText}>Tap on topping to add on donut</Text>
+      <ItemList loading={loading} data={toppings} renderItem={renderItem} />
+      <DonutLandButton title="Add donut to cart" onPress={addDonutToCart} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+  },
   button: {
     backgroundColor: "#3498db",
     paddingVertical: 10,
@@ -102,6 +93,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  headerText: {
+    color: "black",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginVertical: 20,
+  },
+  subHeaderText: {
+    color: "black",
+    fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginVertical: 20,
   },
 });
 

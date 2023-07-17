@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { StyleSheet, Text, View } from "react-native";
 import { deleteOrder, getOrderItem } from "../../api";
 import Item from "../../components/item";
 import ItemSectionList from "../../components/itemSectionList";
+import RoundButton from "../../components/roundButton";
+
 const OrderDetails = ({ route, navigation }) => {
   const [orderData, setOrderData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -79,9 +80,7 @@ const OrderDetails = ({ route, navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Customer: {name}</Text>
-        <TouchableOpacity style={styles.checkButton} onPress={completeOrder}>
-          <Icon name="check" size={20} color="#fff" />
-        </TouchableOpacity>
+        <RoundButton onPress={completeOrder} iconName="check" />
       </View>
 
       <ItemSectionList

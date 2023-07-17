@@ -4,9 +4,10 @@ import { StyleSheet, Text, TextInput } from "react-native";
 const Input = ({
   placeholder = "Enter your name",
   keyboardType = "default",
-  header = "Name",
+  header,
   showRedBorder = false,
   onInputChange,
+  value = "",
 }) => {
   const [name, setName] = useState("");
 
@@ -19,7 +20,7 @@ const Input = ({
     <>
       <Text style={styles.label}>{header}</Text>
       <TextInput
-        value={name}
+        value={value}
         onChangeText={handleInputChange}
         placeholder={placeholder}
         keyboardType={keyboardType}

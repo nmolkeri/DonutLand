@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import { useSelector } from "react-redux";
 import { deleteItem, patchItem, postItem } from "../../api";
 import DonutLandButton from "../../components/dButton";
@@ -42,6 +42,10 @@ const AddEditItem = ({ route, navigation }) => {
   };
 
   const handleSubmit = () => {
+    if (name == "") {
+      Alert.alert("Add name", "Please make sure to add name");
+      return;
+    }
     const data = {
       id: id == "" ? generateUUID(32) : id,
       name: name,
@@ -51,28 +55,43 @@ const AddEditItem = ({ route, navigation }) => {
     navigation.goBack();
   };
 
-  const displayDelete = updateAdd == "update" ? "flex" : "none";
+  const displayDelete = updateAdd == "update";
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Donut name</Text>
+      <Text style={styles.header}>
+        {type.charAt(0).toUpperCase() + type.slice(1)}
+      </Text>
       <TextInput
         value={name}
         onChangeText={(text) => setName(text)}
         placeholder="Enter item name"
         style={styles.input}
       />
-      <DonutLandButton title={updateAdd} onPress={handleSubmit} />
+      <DonutLandButton
+        title={updateAdd == "update" ? "Update" : "Add"}
+        onPress={handleSubmit}
+      />
       <DonutLandButton
         title="Delete"
         onPress={deleteData}
         isVisible={displayDelete}
+      />
+      <DonutLandButton
+        title="Cancel"
+        onPress={() => navigation.goBack()}
+        backgroundColor="red"
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginBottom: 30,
+  },
   header: {
     fontSize: 24,
     fontWeight: "bold",

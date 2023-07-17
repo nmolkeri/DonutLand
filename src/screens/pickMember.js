@@ -4,8 +4,8 @@ import DonutLandButton from "../components/dButton";
 
 const PickMember = ({ navigation }) => {
   return (
-    <View>
-      <Text>Pick member screen</Text>
+    <View style={styles.container}>
+      <Text style={styles.headerText}>Pick Member</Text>
       <DonutLandButton
         title="Admin"
         onPress={() => {
@@ -23,6 +23,18 @@ const PickMember = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginBottom: 30,
+  },
+  headerText: {
+    color: "black",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+});
 
 export default PickMember;

@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-} from "react-native";
-import { generateUUID } from "../../utils";
-import { useSelector, useDispatch } from "react-redux";
-import { patchItem, postItem, deleteItem } from "../../api";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, TextInput, View } from "react-native";
+import { useSelector } from "react-redux";
+import { deleteItem, patchItem, postItem } from "../../api";
 import DonutLandButton from "../../components/dButton";
+import { generateUUID } from "../../utils";
 
-const AddEditDonut = ({ route, navigation }) => {
+const AddEditItem = ({ route, navigation }) => {
   const [name, setName] = useState("");
   const id = useSelector((state) => state.item.selectedProductId);
   const type = useSelector((state) => state.item.type);
@@ -94,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddEditDonut;
+export default AddEditItem;

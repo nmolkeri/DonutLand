@@ -1,172 +1,155 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
-import { View, Text, TouchableOpacity, SectionList, StyleSheet, Button, ActivityIndicator } from 'react-native';
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import { itemSlice } from '../../store/itemSlice';
-import { getDonuts, getTopping } from '../../api';
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { useDispatch } from "react-redux";
+import { getDonuts, getTopping } from "../../api";
+import Item from "../../components/item";
+import ItemSectionList from "../../components/itemSectionList";
+import { itemSlice } from "../../store/itemSlice";
 
 const DonutDashboard = ({ navigation }) => {
   const [donutData, setDonutData] = useState([]);
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const { showActionSheetWithOptions } = useActionSheet();
-    
-    useEffect(() => {
-      fetchDonutData();
-    }, []);
+  const { showActionSheetWithOptions } = useActionSheet();
 
-    useEffect(() =>{
-      fetchToppings();
-    }, [donutData])
+  useEffect(() => {
+    fetchDonutData();
+  }, []);
 
-    const fetchDonutData = async () => {
-      getDonuts()
+  useEffect(() => {
+    fetchToppings();
+  }, [donutData]);
+
+  const fetchDonutData = async () => {
+    getDonuts()
       .then((response) => {
-        console.log('API response:', response.data);
+        console.log("API response:", response.data);
         setDonutData(response.data);
-            setLoading(false);
+        setLoading(false);
       })
       .catch((error) => {
-        console.error('API error:', error);
+        console.error("API error:", error);
       });
-    };
+  };
 
-    const fetchToppings = async () => {
-      getTopping()
+  const fetchToppings = async () => {
+    getTopping()
       .then((response) => {
-        console.log('API response:', response.data);
+        console.log("API response:", response.data);
         const sections = [
           {
-            title: 'Donuts',
+            title: "Donuts",
             data: donutData,
           },
           {
-            title: 'Topping', 
+            title: "Topping",
             data: response.data,
           },
         ];
         setSections(sections);
-         setLoading(false);
+        setLoading(false);
       })
       .catch((error) => {
-        console.error('API error:', error);
+        console.error("API error:", error);
       });
-    }
-    
+  };
 
   const showActionSheet = () => {
-    const options = ['Add donut', 'Add topping', 'Cancel'];
+    const options = ["Add donut", "Add topping", "Cancel"];
     const cancelButtonIndex = 2;
     const handleActionSheetSelection = (buttonIndex) => {
-        if (buttonIndex === 0) {
-          dispatch(itemSlice.actions.setSelected({id: "", 
-            name: "", 
-            type: "donut", 
-            addEdit: "add"}));
-            navigation.navigate('AddEditDonut', {data: {name: ""}});
-        } else if (buttonIndex === 1) {
-          dispatch(itemSlice.actions.setSelected({id: "", 
-            name: "", 
-            type: "topping", 
-            addEdit: "add"}));
-          navigation.navigate('AddEditDonut', {data: {name: ""}});
-        }
-      };
+      if (buttonIndex === 0) {
+        dispatch(
+          itemSlice.actions.setSelected({
+            id: "",
+            name: "",
+            type: "donut",
+            addEdit: "add",
+          })
+        );
+        navigation.navigate("AddEditItem", { data: { name: "" } });
+      } else if (buttonIndex === 1) {
+        dispatch(
+          itemSlice.actions.setSelected({
+            id: "",
+            name: "",
+            type: "topping",
+            addEdit: "add",
+          })
+        );
+        navigation.navigate("AddEditItem", { data: { name: "" } });
+      }
+    };
 
-    showActionSheetWithOptions({
-      options,
-      cancelButtonIndex,
-    }, handleActionSheetSelection);
-  }
-  
-    useLayoutEffect(() => {
-        navigation.setOptions({
-          headerRight: () => (
-            <Button onPress={showActionSheet} title="Add" />
-          ),
-        });
-      }, [navigation]);
-    
-      const handleItemPress = (item, section) => {
-        console.log("section here ")
-        console.log(section)
-        dispatch(itemSlice.actions.setSelected({id: item.id, 
-          name: item.name, 
-          type: section.title == "Donuts" ? "donut" : "topping", 
-          addEdit: "update"}));
-        navigation.navigate('AddEditDonut', {data: {name: item.name}});
-      };
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+      },
+      handleActionSheetSelection
+    );
+  };
 
-      const renderItem = ({ item, section }) => (
-        <TouchableOpacity onPress={() => handleItemPress(item, section)} style={styles.itemTouchable}>
-        <View style={styles.item}>
-          <Text>Name: {item.name}</Text>
-        </View>
-        </TouchableOpacity>
-      );
-    
-      const renderSectionHeader = ({ section }) => (
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionHeaderText}>{section.title}</Text>
-        </View>
-      );
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <Button onPress={showActionSheet} title="Add" />,
+    });
+  }, [navigation]);
+
+  const handleItemPress = (item, section) => {
+    console.log("section here ");
+    console.log(section);
+    dispatch(
+      itemSlice.actions.setSelected({
+        id: item.id,
+        name: item.name,
+        type: section.title == "Donuts" ? "donut" : "topping",
+        addEdit: "update",
+      })
+    );
+    navigation.navigate("AddEditItem", { data: { name: item.name } });
+  };
+
+  const renderItem = ({ item, section }) => (
+    <Item name={item.name} onTapped={() => handleItemPress(item, section)} />
+  );
+
+  const renderSectionHeader = ({ section }) => (
+    <View style={styles.sectionHeader}>
+      <Text style={styles.sectionHeaderText}>{section.title}</Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-      <Text>Donut dashboard</Text>
-        <Text>Add section to display donuts</Text>
-        <Text>Add section to display toppings list</Text>
-        <Text>right top button to add donut or topping</Text>
-        <Text>Add, edit or sold out option for donut and topping</Text>
-        {loading ? (
-        <ActivityIndicator size="large" color="#3498db" />
-      ) : donutData ? (
-        <SectionList
-        sections={sections}
+      <ItemSectionList
+        loading={loading}
+        data={sections}
+        renderHeader={renderSectionHeader}
         renderItem={renderItem}
-        renderSectionHeader={renderSectionHeader}
-        keyExtractor={(item) => item.id}
       />
-      ) : (
-        <Text>Data not available</Text>
-      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-    button: {
-      backgroundColor: '#3498db',
-      paddingVertical: 10,
-      paddingHorizontal: 20,
-      borderRadius: 5,
-      marginTop: 30
-    },
-    buttonText: {
-      color: '#fff',
-      fontSize: 16,
-      fontWeight: 'bold',
-      textAlign: 'center',
-    },
-    headerButton: {
-        marginRight: 10,
-        paddingHorizontal: 10,
-      },
-      headerButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-      },
-      item: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-        padding: 10,
-        marginBottom: 10,
-      },
-  });
+  container: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginBottom: 30,
+  },
+  sectionHeader: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  sectionHeaderText: {
+    color: "black",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+});
 
 export default DonutDashboard;

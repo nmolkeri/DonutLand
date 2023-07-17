@@ -4,7 +4,7 @@ import React from "react";
 import { Alert, Pressable, StyleSheet, Text } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
-import AddEditDonut from "./screens/admin/addDonut";
+import AddEditItem from "./screens/admin/addItem";
 import Admin from "./screens/admin/admin";
 import DonutDashboard from "./screens/admin/donutDashboard";
 import OrderDetails from "./screens/admin/order";
@@ -71,8 +71,8 @@ const Navigation = () => {
         />
         <Stack.Screen name="Checkout" component={Checkout} />
         <Stack.Screen
-          name="AddEditDonut"
-          component={AddEditDonut}
+          name="AddEditItem"
+          component={AddEditItem}
           options={{ presentation: "modal" }}
         />
       </Stack.Navigator>

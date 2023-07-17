@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  SectionList,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import DonutLandButton from "../../components/dButton";
-
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { deleteOrder, getOrderItem } from "../../api";
+import Item from "../../components/item";
+import ItemSectionList from "../../components/itemSectionList";
 const OrderDetails = ({ route, navigation }) => {
   const [orderData, setOrderData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,22 +35,36 @@ const OrderDetails = ({ route, navigation }) => {
     }
   };
 
-  const renderSectionHeader = ({ section: { name } }) => (
-    <View style={styles.sectionHeader}>
-      <Text style={styles.sectionHeaderText}>{name}</Text>
-    </View>
+  const renderSectionHeader = ({ section: { name, quantity } }) => (
+    <Item name={name} quantity={quantity} />
   );
 
   const renderItem = ({ item }) => (
     <View>{item != null || item != "" ? <Text>{item}</Text> : {}}</View>
   );
 
-  const sections = orderData.map((item) => ({
+  const groupedSections = orderData.reduce((acc, item) => {
+    const existingItem = acc.find(
+      (groupedItem) => groupedItem.name === item.name
+    );
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      acc.push({
+        name: item.name,
+        quantity: 1,
+        data: item.toppings || [],
+      });
+    }
+    return acc;
+  }, []);
+
+  const sections = groupedSections.map((item) => ({
     name: item.name,
-    data: item.toppings,
+    quantity: item.quantity,
+    data: item.data,
   }));
 
-  console.log(orderData);
   const completeOrder = async () => {
     await deleteOrder(orderId)
       .then((response) => {
@@ -64,42 +73,53 @@ const OrderDetails = ({ route, navigation }) => {
       .catch((error) => {
         console.error(error);
       });
+    navigation.goBack();
   };
   return (
-    <View>
-      <Text>OrderDetails</Text>
-      <Text>See the details of order</Text>
-      <Text> Customer name: {name}</Text>
-      {loading ? (
-        <ActivityIndicator size="large" color="#3498db" />
-      ) : orderData ? (
-        <SectionList
-          sections={sections}
-          keyExtractor={(item, index) => item + index}
-          renderSectionHeader={renderSectionHeader}
-          renderItem={renderItem}
-        />
-      ) : (
-        <Text>Data not available</Text>
-      )}
-      <DonutLandButton title="Complete order" onPress={completeOrder} />
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Customer: {name}</Text>
+        <TouchableOpacity style={styles.checkButton} onPress={completeOrder}>
+          <Icon name="check" size={20} color="#fff" />
+        </TouchableOpacity>
+      </View>
+
+      <ItemSectionList
+        loading={loading}
+        data={sections}
+        renderHeader={renderSectionHeader}
+        renderItem={renderItem}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: "#3498db",
+  container: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 30,
+    marginBottom: 30,
   },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  headerText: {
+    color: "black",
+    fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  checkButton: {
+    backgroundColor: "#3498db",
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

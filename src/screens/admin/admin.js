@@ -1,56 +1,46 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import DonutLandButton from "../../components/dButton";
 
 const Admin = ({ navigation }) => {
-  
   const navigateToOrderlist = () => {
     //update selected product
-    //dispatch an event in air. Reducer will catch this action and current state. 
+    //dispatch an event in air. Reducer will catch this action and current state.
     // dispatch(productSlice.actions.setSelected(item.id));
     console.log("order list tapped");
-    navigation.navigate('OrderList');
+    navigation.navigate("OrderList");
   };
 
   const navigateToDashBoard = () => {
     //update selected product
-    //dispatch an event in air. Reducer will catch this action and current state. 
+    //dispatch an event in air. Reducer will catch this action and current state.
     // dispatch(productSlice.actions.setSelected(item.id));
-    navigation.navigate('DonutDashboard');
+    navigation.navigate("DonutDashboard");
   };
 
   return (
     <View>
       <Text>Admin</Text>
-
-      <TouchableOpacity style={styles.button}
-      onPress={navigateToOrderlist} >
-      <Text style={styles.buttonText}>{"Order list"} </Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.button} 
-    onPress={navigateToDashBoard}>
-      <Text 
-        style={styles.buttonText}>{"Donut dashboard"} 
-        
-      </Text>
-    </TouchableOpacity>
+      <DonutLandButton title="Order list" onPress={navigateToOrderlist} />
+      <DonutLandButton title="Donut dashboard" onPress={navigateToDashBoard} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-    button: {
-      backgroundColor: '#3498db',
-      paddingVertical: 10,
-      paddingHorizontal: 20,
-      borderRadius: 5,
-      marginTop: 30
-    },
-    buttonText: {
-      color: '#fff',
-      fontSize: 16,
-      fontWeight: 'bold',
-      textAlign: 'center',
-    },
-  });
+  button: {
+    backgroundColor: "#3498db",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 30,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+});
 
 export default Admin;

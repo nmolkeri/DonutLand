@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   donuts: [],
+  donutCount: 0,
 };
 
 export const cartSlice = createSlice({
@@ -26,9 +27,10 @@ export const cartSlice = createSlice({
           state.donuts.push({ id: id, name: name, quantity: 1 });
         }
       }
-
-      console.log("after");
-      console.log(state.donuts);
+      state.donutCount = state.donuts.reduce(
+        (total, item) => total + item.quantity,
+        0
+      );
     },
 
     clearCart: (state, action) => {
@@ -37,4 +39,4 @@ export const cartSlice = createSlice({
   },
 });
 
-export const selectNumberOfItems = (state) => state.cart.items.length;
+export const cartItemsCount = (state) => state.donutCount;

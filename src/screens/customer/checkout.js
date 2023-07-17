@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, ScrollView, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { postCustomer, postMultipltItemsOrder, postOrder } from "../../api";
+import DonutLandButton from "../../components/dButton";
 import Input from "../../components/input";
+import Item from "../../components/item";
 import { cartSlice } from "../../store/cartSlice";
 import { generateUUID } from "../../utils";
 
@@ -30,10 +25,7 @@ const Checkout = ({ navigation }) => {
   };
 
   const renderItem = (item) => (
-    <View style={styles.itemContainer}>
-      <Text style={styles.name}>{item.name}</Text>
-      <Text style={styles.quantity}>{item.quantity}</Text>
-    </View>
+    <Item name={item.name} quantity={item.quantity} />
   );
 
   const checkout = async () => {
@@ -108,9 +100,7 @@ const Checkout = ({ navigation }) => {
         onInputChange={handleNumberChange}
       />
       {cartItems.map((item) => renderItem(item))}
-      <TouchableOpacity style={styles.button} onPress={checkout}>
-        <Text style={styles.buttonText}>{"Checkout"} </Text>
-      </TouchableOpacity>
+      <DonutLandButton title="Checkout" onPress={checkout} />
     </ScrollView>
   );
 };
@@ -119,37 +109,6 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     marginBottom: 30,
-  },
-  button: {
-    backgroundColor: "#3498db",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 30,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  itemContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    padding: 15,
-    marginBottom: 10,
-    borderRadius: 5,
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: "bold",
-    flex: 1,
-  },
-  quantity: {
-    fontSize: 16,
-    fontWeight: "bold",
   },
 });
 

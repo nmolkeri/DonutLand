@@ -14,7 +14,7 @@ export const cartSlice = createSlice({
             const cartItem = state.donuts.find((item) => item.id == id);
             console.log("before")
             console.log(state.donuts);
-            if(totalQuantity < 24) {
+            if(totalQuantity < 24 || (totalQuantity == 24 && amount == -1)) {
                 if(cartItem) {
                     cartItem.quantity += amount
                     if(cartItem.quantity <= 0){

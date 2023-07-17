@@ -8,11 +8,11 @@ const OrderList = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-      fetchDonutData();
+      fetchDonutsData();
     }, []);
 
-    const fetchDonutData = async () => {
-      await axios.get('http://localhost:3100/order')
+    const fetchDonutsData = async () => {
+      await axios.get('http://localhost:3100/order/')
       .then(function (response) {
         console.log("got response from server")
         setOrderData(response.data);
@@ -25,15 +25,18 @@ const OrderList = ({ navigation }) => {
       })
     };
 
-    const navigateToOrderDetails = () => {
-        navigation.navigate('OrderDetails');
+    const navigateToOrderDetails = (id) => {
+      console.log("asdfasdf")
+      console.log(id)
+        navigation.navigate('OrderDetails', {data: {id: id}});
       };
 
       const renderOrder = ({ item }) => (
-        <View style={styles.item}>
-          <Text>ID: {item.id}</Text>
-          <Text>Name: {item.name}</Text>
-        </View>
+        <TouchableOpacity onPress={() => navigateToOrderDetails(item.id)}>
+          <View style={styles.item}>
+              <Text>Name: {item.name}</Text>
+          </View>
+        </TouchableOpacity>
       );
 
   return (
@@ -74,6 +77,11 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight: 'bold',
       textAlign: 'center',
+    }, 
+    item: {
+      height: 40,
+      borderWidth: 1,
+      borderColor: 'black',
     },
   });
 

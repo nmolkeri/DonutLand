@@ -4,39 +4,19 @@ import { generateUUID } from '../../utils';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 
-const AddEditDonut = ({ navigation }) => {
-  const [text, setText] = useState('');
-  // const [id, setId] = useState('');
-  // const [type, setType] = useState('');
-  // const [updateAdd, setUpdateAdd] = useState('');
+const AddEditDonut = ({ route, navigation }) => {
+  const [name, setName] = useState('');
   const id = useSelector((state) => state.item.selectedProductId);
-  const name = useSelector((state) => state.item.selectedProductName);
   const type = useSelector((state) => state.item.type);
   const updateAdd = useSelector((state) => state.item.addEdit);
 
   const baseUrl = 'http://localhost:3100';
   console.log("asdf");
 
-  // useEffect(() => {
-  //   // const data = route.params.data;
-
-  //   // if(name == '' && data.id == ''){
-  //   //   setUpdateAdd("Add");
-  //   // } else {
-  //   //   setUpdateAdd("Update")
-  //   // }
-
-  //   setName(data.itemName);
-  //   setId(data.id);
-  //   console.log("hello there")
-  //   console.log(data.type)
-  //   setType(data.type);
-  // }, [route.params.data]);
-
-  // const handleInputChange2 = (text) => {
-  //   setName(text);
-  // };
-
+  useEffect(() => {
+    const data = route.params.data;
+    setName(data.name);
+  }, [route.params.data]);
 
   const sendDataToAPI = async (data) => {
     try {
@@ -64,7 +44,7 @@ const AddEditDonut = ({ navigation }) => {
       })
       .catch(error => {
         console.error(error);
-      });;
+      });
   };
 
   const handleSubmit = () => {
@@ -73,26 +53,29 @@ const AddEditDonut = ({ navigation }) => {
         name: name,
       };
       sendDataToAPI(data);
-
+      console.log(data)
     navigation.goBack();
   };
 
-  const display = updateAdd == "update" ? "flex" : "none";
+  const displayDelete = updateAdd == "update" ? "flex" : "none";
 
   return (
     <View style={styles.container}>
        
       <Text style={styles.header}>Donut name</Text>
       <TextInput
-        style={styles.input}
         value={name}
+        onChangeText={(text) => setName(text)}
+        placeholder="Enter item name"      
+        style={styles.input}  
       />
+
       <TouchableOpacity onPress={handleSubmit} style={styles.button}>
         <Text style={styles.buttonText}>{updateAdd}</Text>
       </TouchableOpacity>
       <TouchableOpacity 
         onPress={deleteItem} 
-        style={[styles.button, {display}]}>
+        style={[styles.button, {displayDelete}]}>
         <Text style={styles.buttonText}>Delete</Text>
       </TouchableOpacity>
     </View>

@@ -6,11 +6,11 @@ import axios from 'axios';
 import { cartSlice } from '../../store/cartSlice';
 
 const Customer = ({ navigation }) => {
-  const [counter, setCounter] = useState(0);
   const [donutData, setDonutData] = useState([]);
   const [loading, setLoading] = useState(true);
+
     const dispatch = useDispatch();
-    const id = useSelector((state) => state.item.selectedProductId);
+    var cartItems = useSelector((state) => state.cart.donuts);
 
     useEffect(() => {
       fetchDonutData();
@@ -28,21 +28,37 @@ const Customer = ({ navigation }) => {
     };
 
   const handleIncrement = (item) => {
+    console.log(cartItems)
     dispatch(cartSlice.actions.addItemToCart({id: item.id, name: item.name, amount: 1}));
   };
 
   const handleDecrement = (item) => {
+    console.log(cartItems)
     dispatch(cartSlice.actions.addItemToCart({id: item.id, name: item.name, amount: -1}));
   };
 
+  const donutsWithQuantityById = cartItems.map(item => ({
+    id: item.id,
+    quantity: item.quantity
+  }));
+  
+  const findQuantityById = (id) => {
+    const item = donutsWithQuantityById.find(item => item.id === id);
+    return item ? item.quantity : 0;
+  };
+
+  console.log(donutsWithQuantityById);
+
   const renderItem = ({ item }) => (
     <View style={styles.container}>
-      <Text style={styles.name}>{item.name}</Text>
+      <TouchableOpacity onPress={navigateToCustomizeDonut}>
+        <Text style={styles.name}>{item.name}</Text>
+      </TouchableOpacity>
       <View style={styles.stepperContainer}>
         <TouchableOpacity style={styles.stepperButton} onPress={() => handleDecrement(item)}>
           <Text style={styles.stepperButtonText}>-</Text>
         </TouchableOpacity>
-        <Text style={styles.count}>{counter}</Text>
+        <Text style={styles.count}>{findQuantityById(item.id)}</Text>
         <TouchableOpacity style={styles.stepperButton} onPress={() => handleIncrement(item)}>
           <Text style={styles.stepperButtonText}>+</Text>
         </TouchableOpacity>
@@ -51,8 +67,6 @@ const Customer = ({ navigation }) => {
   );
 
   const navigateToCustomizeDonut = () => {
-    //update selected product
-    //dispatch an event in air. Reducer will catch this action and current state. 
     // dispatch(productSlice.actions.setSelected(item.id));
     navigation.navigate('CustomizeDonut');
   };

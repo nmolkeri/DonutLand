@@ -15,13 +15,18 @@ const DonutDashboard = ({ navigation }) => {
     
     useEffect(() => {
       fetchDonutData();
-      fetchToppings();
     }, []);
+
+    useEffect(() =>{
+      fetchToppings();
+    }, [donutData])
 
     const fetchDonutData = async () => {
       await axios.get('http://localhost:3100/donut')
           .then(function (response) {
             setDonutData(response.data);
+            console.log(donutData)
+            setLoading(false);
           })
           .catch(function (error) {
             setLoading(false);
@@ -62,13 +67,13 @@ const DonutDashboard = ({ navigation }) => {
             name: "", 
             type: "donut", 
             addEdit: "add"}));
-            navigation.navigate('AddEditDonut');
+            navigation.navigate('AddEditDonut', {data: {name: ""}});
         } else if (buttonIndex === 1) {
           dispatch(itemSlice.actions.setSelected({id: "", 
             name: "", 
             type: "topping", 
             addEdit: "add"}));
-          navigation.navigate('AddEditDonut');
+          navigation.navigate('AddEditDonut', {data: {name: ""}});
         }
       };
 
@@ -93,7 +98,7 @@ const DonutDashboard = ({ navigation }) => {
           name: item.name, 
           type: section.title == "Donuts" ? "donut" : "topping", 
           addEdit: "update"}));
-        navigation.navigate('AddEditDonut');
+        navigation.navigate('AddEditDonut', {data: {name: item.name}});
       };
 
       const renderItem = ({ item, section }) => (

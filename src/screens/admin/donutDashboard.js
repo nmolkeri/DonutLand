@@ -4,6 +4,7 @@ import { useActionSheet } from '@expo/react-native-action-sheet';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { itemSlice } from '../../store/itemSlice';
+import { getDonuts, getTopping } from '../../api';
 
 const DonutDashboard = ({ navigation }) => {
   const [donutData, setDonutData] = useState([]);
@@ -22,21 +23,21 @@ const DonutDashboard = ({ navigation }) => {
     }, [donutData])
 
     const fetchDonutData = async () => {
-      await axios.get('http://localhost:3100/donut')
-          .then(function (response) {
-            setDonutData(response.data);
-            console.log(donutData)
+      getDonuts()
+      .then((response) => {
+        console.log('API response:', response.data);
+        setDonutData(response.data);
             setLoading(false);
-          })
-          .catch(function (error) {
-            setLoading(false);
-          })
+      })
+      .catch((error) => {
+        console.error('API error:', error);
+      });
     };
 
     const fetchToppings = async () => {
-      await axios.get('http://localhost:3100/topping')
-      .then(function (response) {
-        console.log("got response from server")
+      getTopping()
+      .then((response) => {
+        console.log('API response:', response.data);
         const sections = [
           {
             title: 'Donuts',
@@ -49,12 +50,10 @@ const DonutDashboard = ({ navigation }) => {
         ];
         setSections(sections);
          setLoading(false);
-        console.log(response.data);
       })
-      .catch(function (error) {
-        setLoading(false);
-        console.log(error);
-      })
+      .catch((error) => {
+        console.error('API error:', error);
+      });
     }
     
 

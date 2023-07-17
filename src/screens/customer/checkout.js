@@ -3,14 +3,16 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList, TextInput } from 'r
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { generateUUID } from '../../utils';
+import { postOrder, postCustomer, postMultipltItemsOrder } from '../../api';
+import { cartSlice } from '../../store/cartSlice';
 
 const Checkout = ({ navigation }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   var cartItems = useSelector((state) => state.cart.donuts);
-  const baseUrl = 'http://localhost:3100';
   const [nameIsEmpty, setNameIsEmpty] = useState(false);
   const [numberIsEmpty, setNumberIsEmpty] = useState(false);
+  const dispatch = useDispatch();
 
   const renderItem = ({ item }) => (
     <View style={styles.container}>
@@ -35,17 +37,15 @@ const Checkout = ({ navigation }) => {
     
 
     try {
-      const apiUrl = `${baseUrl}/customer`;
-      const response = await axios.post(apiUrl, data);
+      const response = await postCustomer(data);
+
       const orderData = {
         id: generateUUID(32),
         name: name,
         customerId: response.data.id
       };
 
-      const orderApi = `${baseUrl}/order`;
-      const orderRes = await axios.post(orderApi, orderData);
-
+      const orderRes = await postOrder(orderData);
 
       const transformedData = cartItems.map(item => {
         const { id, name, quantity } = item;
@@ -58,15 +58,12 @@ const Checkout = ({ navigation }) => {
             donutId: id,
           });
         }
-      
         return donutsArray;
       }).flat();
 
       var bulkJson = {bulk: transformedData}
-
-      const itemApi = `${baseUrl}/order/${orderRes.data.id}/item/bulk`;
-      await axios.post(itemApi, bulkJson);
-
+      await postMultipltItemsOrder(orderRes.data.id, bulkJson)
+      dispatch(cartSlice.actions.clearCart());
       navigation.popToTop();
 
     } catch (error) {

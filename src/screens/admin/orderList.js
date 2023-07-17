@@ -1,7 +1,6 @@
 import React, { useState, useLayoutEffect, useEffect } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, Button, ActivityIndicator } from 'react-native';
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import axios from 'axios';
+import { getOrder } from '../../api';
 
 const OrderList = ({ navigation }) => {
   const [orderData, setOrderData] = useState(null);
@@ -12,7 +11,7 @@ const OrderList = ({ navigation }) => {
     }, []);
 
     const fetchDonutsData = async () => {
-      await axios.get('http://localhost:3100/order/')
+      getOrder()
       .then(function (response) {
         console.log("got response from server")
         setOrderData(response.data);

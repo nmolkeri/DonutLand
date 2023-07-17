@@ -11,7 +11,6 @@ import OrderList from './screens/admin/orderList';
 import { Pressable } from 'react-native';
 import { Text } from 'react-native';
 import AddEditDonut from './screens/admin/addDonut';
-import AddEditTopping from './screens/admin/addTopping';
 import React, { useState } from 'react';
 
 const Stack = createNativeStackNavigator();
@@ -55,7 +54,6 @@ const Navigation = () => {
         />
         <Stack.Screen name="Checkout" component={Checkout} />
         <Stack.Screen name="AddEditDonut" component={AddEditDonut} options={{presentation: "modal"}}/>
-        <Stack.Screen name="AddEditTopping" component={AddEditTopping} options={{presentation: "modal"}}/>
       </Stack.Navigator>
       
     </NavigationContainer>

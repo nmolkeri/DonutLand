@@ -24,22 +24,13 @@ export const cartSlice = createSlice({
                     state.donuts.push({id: id, name: name, quantity: 1});
                 }
             }
-
+            
             console.log("after")
             console.log(state.donuts);
         },
 
-        changeQuantity: (state, action) => {
-            const {productId, amount} = action.payload;
-            const cartItem = state.donuts.find((item) => item.product.id === productId);
-
-            if(cartItem) {
-                cartItem.quantity += amount
-            }
-
-            if(cartItem.quantity <= 0){
-                state.donuts = state.donuts.filter((item) => item !== cartItem);
-            }
+        clearCart: (state, action) => {
+            state.donuts = [];
         }
     }
 });

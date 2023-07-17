@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, SectionList, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-
+import { deleteOrder, getOrderItem } from '../../api';
 const OrderDetails = ({route, navigation}) => {
   const [orderData, setOrderData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,11 +29,8 @@ const OrderDetails = ({route, navigation}) => {
 
     const fetchDonutsData = async () => {
       if (ids) {
-        const apiUrl = `${baseUrl}/order/${ids}/item`;
-        console.log(apiUrl)
-        var response = await fetch(apiUrl)
-        const responseData = await response.json();
-        setOrderData(responseData)
+        var response = await getOrderItem(ids)
+        setOrderData(response.data)
         setLoading(false)
         } else {
           console.log('Data is not set yet, cannot make the web call.');
@@ -59,14 +56,12 @@ const OrderDetails = ({route, navigation}) => {
 
     console.log(orderData)
       const completeOrder = async () => {
-        const apiUrl = `${baseUrl}/order/${orderId}`;
-        console.log(apiUrl)
-        await axios.delete(apiUrl).then(response => {
-          console.log(`Deleted order with ID ${id}`);
-        })
-        .catch(error => {
-          console.error(error);
-        });
+        await deleteOrder(orderId).then(response => {
+            console.log(`Deleted order with ID ${id}`);
+          })
+          .catch(error => {
+            console.error(error);
+          });
       }
   return (
     <View>

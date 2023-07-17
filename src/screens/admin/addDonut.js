@@ -3,16 +3,14 @@ import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-nativ
 import { generateUUID } from '../../utils';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
+import { patchItem, postItem, deleteItem } from '../../api';
 
 const AddEditDonut = ({ route, navigation }) => {
   const [name, setName] = useState('');
   const id = useSelector((state) => state.item.selectedProductId);
   const type = useSelector((state) => state.item.type);
   const updateAdd = useSelector((state) => state.item.addEdit);
-
-  const baseUrl = 'http://localhost:3100';
-  console.log("asdf");
-
+  
   useEffect(() => {
     const data = route.params.data;
     setName(data.name);
@@ -20,31 +18,28 @@ const AddEditDonut = ({ route, navigation }) => {
 
   const sendDataToAPI = async (data) => {
     try {
-      const apiUrl = `${baseUrl}/${type}`;
       if(updateAdd == "add") {
-        await axios.post(apiUrl, data);
+        await postItem(type, data);
+        navigation.goBack()
       } else if (updateAdd == "update") {
-        var ap = `${apiUrl}/${id}`
-        console.log(ap)
-       const response = await axios.patch(ap, data);
-       console.log(response.data);
+        await patchItem(type, data.id, data);
+        navigation.goBack()
       }
     } catch (error) {
       console.error('Error sending data:', error);
     }
   };
 
-  const deleteItem = async () => {
+  const deleteData = async () => {
     
-      const apiUrl = `${baseUrl}/${type}`;
-      var ap = `${apiUrl}/${id}`
-      console.log(ap)
-      await axios.delete(ap).then(response => {
-        console.log(`Deleted post with ID ${id}`);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    await deleteItem(type, id).then(response => {
+      console.log(`Deleted post with ID ${id}`);
+    })
+    .catch(error => {
+      console.error(error);
+    })
+    navigation.goBack()
+
   };
 
   const handleSubmit = () => {
@@ -74,7 +69,7 @@ const AddEditDonut = ({ route, navigation }) => {
         <Text style={styles.buttonText}>{updateAdd}</Text>
       </TouchableOpacity>
       <TouchableOpacity 
-        onPress={deleteItem} 
+        onPress={deleteData} 
         style={[styles.button, {displayDelete}]}>
         <Text style={styles.buttonText}>Delete</Text>
       </TouchableOpacity>

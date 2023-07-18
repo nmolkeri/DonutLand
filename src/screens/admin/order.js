@@ -73,9 +73,7 @@ const OrderDetails = ({ route, navigation }) => {
 
   const completeOrder = async () => {
     await deleteOrder(orderId)
-      .then((response) => {
-        console.log(`Deleted order with ID ${id}`);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.error(error);
       });

@@ -31,8 +31,9 @@ export const cartSlice = createSlice({
       );
     },
 
-    clearCart: (state, action) => {
+    clearCart: (state) => {
       state.donuts = [];
+      state.donutCount = 0;
     },
   },
 });

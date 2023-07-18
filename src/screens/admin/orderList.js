@@ -1,3 +1,4 @@
+import { useIsFocused } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { getOrder } from "../../api";
@@ -7,10 +8,11 @@ import ItemList from "../../components/itemList";
 const OrderList = ({ navigation }) => {
   const [orderData, setOrderData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     fetchDonutsData();
-  }, []);
+  }, [isFocused]);
 
   const fetchDonutsData = async () => {
     getOrder()

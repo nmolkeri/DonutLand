@@ -1,4 +1,5 @@
 import { useActionSheet } from "@expo/react-native-action-sheet";
+import { useIsFocused } from "@react-navigation/native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { useDispatch } from "react-redux";
@@ -12,12 +13,13 @@ const DonutDashboard = ({ navigation }) => {
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
 
   const { showActionSheetWithOptions } = useActionSheet();
 
   useEffect(() => {
     fetchDonutData();
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     fetchToppings();
@@ -26,7 +28,6 @@ const DonutDashboard = ({ navigation }) => {
   const fetchDonutData = async () => {
     getDonuts()
       .then((response) => {
-        console.log("API response:", response.data);
         setDonutData(response.data);
         setLoading(false);
       })
@@ -38,7 +39,6 @@ const DonutDashboard = ({ navigation }) => {
   const fetchToppings = async () => {
     getTopping()
       .then((response) => {
-        console.log("API response:", response.data);
         const sections = [
           {
             title: "Donuts",
@@ -100,8 +100,6 @@ const DonutDashboard = ({ navigation }) => {
   }, [navigation]);
 
   const handleItemPress = (item, section) => {
-    console.log("section here ");
-    console.log(section);
     dispatch(
       itemSlice.actions.setSelected({
         id: item.id,

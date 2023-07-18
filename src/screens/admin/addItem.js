@@ -20,10 +20,8 @@ const AddEditItem = ({ route, navigation }) => {
     try {
       if (updateAdd == "add") {
         await postItem(type, data);
-        navigation.goBack();
       } else if (updateAdd == "update") {
         await patchItem(type, data.id, data);
-        navigation.goBack();
       }
     } catch (error) {
       console.error("Error sending data:", error);
@@ -51,7 +49,6 @@ const AddEditItem = ({ route, navigation }) => {
       name: name,
     };
     sendDataToAPI(data);
-    console.log(data);
     navigation.goBack();
   };
 

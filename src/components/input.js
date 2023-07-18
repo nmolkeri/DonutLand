@@ -7,7 +7,6 @@ const Input = ({
   header,
   showRedBorder = false,
   onInputChange,
-  value = "",
 }) => {
   const [name, setName] = useState("");
 
@@ -20,7 +19,6 @@ const Input = ({
     <>
       <Text style={styles.label}>{header}</Text>
       <TextInput
-        value={value}
         onChangeText={handleInputChange}
         placeholder={placeholder}
         keyboardType={keyboardType}

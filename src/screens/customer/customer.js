@@ -28,7 +28,6 @@ const Customer = ({ navigation }) => {
   };
 
   const handleIncrement = (item) => {
-    console.log(cartItems);
     dispatch(
       cartSlice.actions.addItemToCart({
         id: item.id,
@@ -39,7 +38,6 @@ const Customer = ({ navigation }) => {
   };
 
   const handleDecrement = (item) => {
-    console.log(cartItems);
     dispatch(
       cartSlice.actions.addItemToCart({
         id: item.id,
@@ -84,10 +82,6 @@ const Customer = ({ navigation }) => {
 
   const navigateToCustomizeDonut = (item) => {
     navigation.navigate("CustomizeDonut", { data: item });
-  };
-
-  const clearCart = () => {
-    console.log("Clear cart");
   };
 
   return (

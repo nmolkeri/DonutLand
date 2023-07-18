@@ -15,20 +15,15 @@ const OrderList = ({ navigation }) => {
   const fetchDonutsData = async () => {
     getOrder()
       .then(function (response) {
-        console.log("got response from server");
         setOrderData(response.data);
         setLoading(false);
-        console.log(response.data);
       })
       .catch(function (error) {
         setLoading(false);
-        console.log(error);
       });
   };
 
   const navigateToOrderDetails = (id) => {
-    console.log("asdfasdf");
-    console.log(id);
     navigation.navigate("OrderDetails", { data: { id: id } });
   };
 

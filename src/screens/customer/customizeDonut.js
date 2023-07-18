@@ -33,12 +33,9 @@ const CustomizeDonut = ({ route, navigation }) => {
       })
       .catch(function (error) {
         setLoading(false);
-        console.log(error);
       });
   };
-  console.log(toppings);
   const handleItemPress = (item) => {
-    console.log(item);
     const itemPresent = toppingsAdded.find((i) => i.id === item.id);
     if (!itemPresent) {
       setAlertMessage(`${item.name} added`);
@@ -47,7 +44,6 @@ const CustomizeDonut = ({ route, navigation }) => {
       setAlertMessage(`${item.name} removed`);
       toppingsAdded = toppingsAdded.filter((i) => i !== item);
     }
-    console.log(toppingsAdded);
   };
 
   const addDonutToCart = () => {

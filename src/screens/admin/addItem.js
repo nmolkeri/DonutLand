@@ -45,7 +45,7 @@ const AddEditItem = ({ route, navigation }) => {
       return;
     }
     const data = {
-      id: id == "" ? generateUUID(32) : id,
+      id: id == "" ? generateUUID(26) : id,
       name: name,
     };
     sendDataToAPI(data);

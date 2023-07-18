@@ -42,7 +42,7 @@ const Checkout = ({ navigation }) => {
     }
 
     const data = {
-      id: generateUUID(26),
+      id: generateUUID(),
       name: name,
       phone: number,
     };
@@ -51,7 +51,7 @@ const Checkout = ({ navigation }) => {
       const response = await postCustomer(data);
 
       const orderData = {
-        id: generateUUID(26),
+        id: generateUUID(),
         name: name,
         customerId: response.data.id,
       };
@@ -65,7 +65,7 @@ const Checkout = ({ navigation }) => {
 
           for (let i = 0; i < quantity; i++) {
             donutsArray.push({
-              id: generateUUID(26),
+              id: generateUUID(),
               name: name,
               donutId: id,
             });

@@ -1,8 +1,10 @@
-export function generateUUID(digits) {
-  let str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXZ";
-  let uuid = [];
-  for (let i = 0; i < digits; i++) {
-    uuid.push(str[Math.floor(Math.random() * str.length)]);
-  }
-  return uuid.join("");
+export function generateUUID() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+    /(x)|(y)|([-4])/g,
+    function (match, p1, p2, p3) {
+      if (p1) return Math.floor(Math.random() * 0xf).toString(16);
+      if (p2) return Math.floor(Math.random() * 4 + 8).toString(16);
+      return p3;
+    }
+  );
 }

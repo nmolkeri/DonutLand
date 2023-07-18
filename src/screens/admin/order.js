@@ -28,9 +28,14 @@ const OrderDetails = ({ route, navigation }) => {
 
   const fetchDonutsData = async () => {
     if (ids) {
-      var response = await getOrderItem(ids);
-      setOrderData(response.data);
-      setLoading(false);
+      await getOrderItem(ids)
+        .then((response) => {
+          setOrderData(response.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("API error:", error);
+        });
     } else {
       console.log("Data is not set yet, cannot make the web call.");
     }

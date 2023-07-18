@@ -2,7 +2,6 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:3100";
 
-// Define your API endpoints here
 const endpoints = {
   donut: "/donut",
   topping: "/topping",
